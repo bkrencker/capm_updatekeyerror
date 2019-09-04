@@ -1,5 +1,5 @@
 {
-	"welcomePage": "/comcapmui5errorui5-1.0.0/index.html",
+	"welcomeFile": "/comcapmui5errorui5-1.0.0/index.html",
 	"authenticationMethod": "route",
 	"routes": [{
 		"source": "/srv_api/(.*)$",

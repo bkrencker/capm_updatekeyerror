@@ -4,12 +4,57 @@
 			<pages>
 				<Page id="page" title="{i18n>title}">
 					<content>
-						<List items="{/Books}">
+						<Table id="idTable" growing="true" growingThreshold="10" mode="SingleSelectLeft"
+							items="{ path: '/Books', parameters: { $count: true, $$updateGroupId : 'updateGroup' } }">
+							<headerToolbar>
+								<OverflowToolbar>
+									<content>
+										<ToolbarSpacer/>
+										<SearchField id="searchField" width="20%" placeholder="{i18n>searchFieldPlaceholder}" enabled="{= !${appView>/hasUIChanges}}"
+											search=".onSearch"/>
+										<Button icon="sap-icon://add" tooltip="{i18n>createButtonText}" press=".onCreate">
+											<layoutData>
+												<OverflowToolbarLayoutData priority="NeverOverflow"/>
+											</layoutData>
+										</Button>
+										<Button icon="sap-icon://delete" tooltip="{i18n>deleteButtonText}" press=".onDelete">
+											<layoutData>
+												<OverflowToolbarLayoutData priority="NeverOverflow"/>
+											</layoutData>
+										</Button>
+										<Button icon="sap-icon://refresh" enabled="{= !${appView>/hasUIChanges}}" tooltip="{i18n>refreshButtonText}" press=".onRefresh"/>
+										<Button id="sortUsersButton" icon="sap-icon://sort" enabled="{= !${appView>/hasUIChanges}}" tooltip="{i18n>sortButtonText}" press=".onSort"/>
+									</content>
+								</OverflowToolbar>
+							</headerToolbar>
+							<columns>
+								<Column>
+									<Text text="ID"/>
+								</Column>
+								<Column>
+									<Text text="Title"/>
+								</Column>
+							</columns>
 							<items>
-								<StandardListItem title="{title}" />
+								<ColumnListItem>
+									<cells>
+										<Input value="{ID}" change=".onInputChange"/>
+									</cells>
+									<cells>
+										<Input value="{title}"/>
+									</cells>
+								</ColumnListItem>
 							</items>
-						</List>
+						</Table>
 					</content>
+					<footer>
+						<Toolbar visible="{appView>/hasUIChanges}">
+							<ToolbarSpacer/>
+							<Button id="saveButton" type="Emphasized" text="{i18n>saveButtonText}"
+								enabled="{= ${message>/}.length === 0 &amp;&amp; ${appView>/keyEmpty} === false }" press=".onSave"/>
+							<Button id="doneButton" text="{i18n>cancelButtonText}" press=".onResetChanges"/>
+						</Toolbar>
+					</footer>
 				</Page>
 			</pages>
 		</App>
