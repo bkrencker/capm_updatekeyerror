@@ -1,5 +1,5 @@
 ID: capmupdatekeyerror
-_schema-version: "2.1"
+_schema-version: '2.1'
 parameters:
   deploy_mode: html5-repo
 version: 0.0.1
@@ -12,11 +12,24 @@ modules:
       memory: 256M
     requires:
       - name: capmupdatekeyerror_html5_repo_runtime
+      - name: uaa_capmupdatekeyerror
+      - name: srv_api
+        group: destinations
+        properties:
+          forwardAuthToken: true
+          name: srv_api
+          url: '~{url}'
   - name: capmupdatekeyerror_ui_deployer
     type: com.sap.html5.application-content
     path: capmupdatekeyerror_ui_deployer
     requires:
       - name: capmupdatekeyerror_html5_repo_host
+    build-parameters:
+      requires:
+        - name: ui5
+          artifacts:
+            - './*'
+          target-path: resources/ui5
   - name: capmupdatekeyerror-db
     type: hdb
     path: db
@@ -34,9 +47,24 @@ modules:
     provides:
       - name: srv_api
         properties:
-          url: ${default-url}
+          url: '${default-url}'
     requires:
       - name: capmupdatekeyerror-db-hdi-container
+  - name: ui5
+    type: html5
+    path: ui5
+    build-parameters:
+      builder: grunt
+      supported-platforms: []
+      build-result: dist
+    requires:
+      - name: srv_api
+        group: destinations
+        properties:
+          forwardAuthToken: true
+          strictSSL: false
+          name: srv_api
+          url: ~{url}
 resources:
   - name: capmupdatekeyerror_html5_repo_runtime
     parameters:
@@ -51,4 +79,15 @@ resources:
   - name: capmupdatekeyerror-db-hdi-container
     type: com.sap.xs.hdi-container
     properties:
-      hdi-container-name: ${service-name}
+      hdi-container-name: '${service-name}'
+  - name: uaa_capmupdatekeyerror
+    parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+    type: org.cloudfoundry.managed-service
+  - name: dest_capmupdatekeyerror
+    parameters:
+      service-plan: lite
+      service: destination
+    type: org.cloudfoundry.managed-service

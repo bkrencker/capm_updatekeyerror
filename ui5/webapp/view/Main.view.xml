@@ -1,0 +1,17 @@
+<mvc:View controllerName="com.capmui5error.ui5.controller.Main" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m">
+	<Shell id="shell">
+		<App id="app">
+			<pages>
+				<Page id="page" title="{i18n>title}">
+					<content>
+						<List items="{/Books}">
+							<items>
+								<StandardListItem title="{title}" />
+							</items>
+						</List>
+					</content>
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>

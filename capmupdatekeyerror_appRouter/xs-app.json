@@ -1,4 +1,11 @@
 {
-  "authenticationMethod": "none",
-  "routes": []
+	"welcomePage": "/comcapmui5errorui5-1.0.0/index.html",
+	"authenticationMethod": "route",
+	"routes": [{
+		"source": "/srv_api/(.*)$",
+		"target": "$1",
+		"authenticationType": "none",
+		"destination": "srv_api",
+		"csrfProtection": false
+	}]
 }
